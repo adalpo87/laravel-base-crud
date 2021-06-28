@@ -34,7 +34,10 @@
                 </tbody>
             </table>
         </section>
-
+        <section class="container">
+            {{-- PER CREARE LE PAGINE NUMERATE --}}
+            {{ $comics->links() }}
+        </section>
     </section>
     
 @endsection

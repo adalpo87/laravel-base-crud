@@ -14,7 +14,7 @@ class ComicController extends Controller
      */
     public function index()
     {
-        $comics = Comic::all();
+        $comics = Comic::paginate(6);
         
         /* passiamo il dato alla vista in modalità compatta */
         return view('comics.index', compact('comics'));
@@ -39,19 +39,23 @@ class ComicController extends Controller
     public function store(Request $request)
     {
         /* tramite request prendiamo tutti i dati di create */
-
+        /* SLUG - ricordati di aggiungere --> use Illuminate\Support\Str;*/
          /* buttiamo tutto dentro il db come abbiamo fatto con il seed */
         $data = $request->all();
         $new_comic = new Comic();
-        $new_comic->title = $data['title'];
-        /* SLUG - ricordati di aggiungere --> use Illuminate\Support\Str;*/
+        /* $new_comic->title = $data['title'];
         $new_comic->slug=Str::slug($data['title'], '-');
         $new_comic->description = $data['description'];
         $new_comic->image = $data['image'];
         $new_comic->price = $data['price'];
         $new_comic->series = $data['series'];
         $new_comic->sale_date = $data['sale_date'];
-        $new_comic->type = $data['type'];
+        $new_comic->type = $data['type']; */
+
+        /* più sbrigativo con questo metodo: */
+        $data['slug']=Str::slug($data['title'], '-');
+        $new_comic->fill($data);
+      
         $new_comic->save();
 
         /* per visualizzarlo gli dico la pagina e il dato che gli passo */
