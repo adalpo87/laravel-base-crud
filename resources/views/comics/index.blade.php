@@ -27,7 +27,7 @@
                             <td >EDIT</td>
                             <td>DELETE</td>
                             <td>
-                                <a href="{{ route('comics.show',$comic->id)}}" class="btn btn-success">Look</a>
+                                <a href="{{ route('comics.show',$comic)}}" class="btn btn-success">Look</a>
                             </td>
                         </tr>
                     @endforeach
