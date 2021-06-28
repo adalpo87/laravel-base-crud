@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comic;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class ComicController extends Controller
 {
     /**
@@ -38,7 +38,24 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /* tramite request prendiamo tutti i dati di create */
+
+         /* buttiamo tutto dentro il db come abbiamo fatto con il seed */
+        $data = $request->all();
+        $new_comic = new Comic();
+        $new_comic->title = $data['title'];
+        /* SLUG - ricordati di aggiungere --> use Illuminate\Support\Str;*/
+        $new_comic->slug=Str::slug($data['title'], '-');
+        $new_comic->description = $data['description'];
+        $new_comic->image = $data['image'];
+        $new_comic->price = $data['price'];
+        $new_comic->series = $data['series'];
+        $new_comic->sale_date = $data['sale_date'];
+        $new_comic->type = $data['type'];
+        $new_comic->save();
+
+        /* per visualizzarlo gli dico la pagina e il dato che gli passo */
+        return redirect()->route('comics.show', $new_comic);
     }
 
     /**
