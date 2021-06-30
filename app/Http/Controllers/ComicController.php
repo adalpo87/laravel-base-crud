@@ -68,14 +68,14 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comic $comic)
+    public function show($id)
     {
-        /* $comic = Comic::find($id); */
-        /* nel caso di index sbagliato */
+        $comic = Comic::find($id);
+       
         if($comic){
             return view('comics.show', compact('comic'));
         }
-        abort(404);
+        abort(404, 'Prodotto non presente nel database');
         
     }
 
@@ -87,7 +87,12 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::find($id);
+       
+        if($comic){
+            return view('comics.edit', compact('comic'));
+        }
+        abort(404, 'Prodotto non presente nel database');
     }
 
     /**
@@ -97,9 +102,16 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $data = $request->all();
+        //$comic = Comic::find($id);
+        //dd($data); -->entità sovrascritta
+        //dd($comic); -->entità originale
+        $data['slug']=Str::slug($data['title'], '-');
+        $comic->update($data);
+
+        return redirect()->route('comics.show', $comic);
     }
 
     /**
@@ -108,8 +120,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+        return redirect()->route('comics.index')->with('deleted', $comic->title);
     }
 }

@@ -4,7 +4,7 @@
 
     <section class="container mt-5">
         <div>
-        <h1>{{ $comic->title }}</h1>
+        <h1>{{ $comic->title }} <a href="{{ route('comics.edit',$comic)}}" class="btn btn-primary">Edit</a></h1>
          </div>
 
          <div class="my-3">
